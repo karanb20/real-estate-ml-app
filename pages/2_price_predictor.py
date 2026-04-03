@@ -8,44 +8,72 @@ import os
 st.set_page_config(page_title="Price Predictor")
 
 # -------------------------------
-# ✅ DOWNLOAD + LOAD FILES (FIXED)
+# ✅ LOAD FILES (ROBUST VERSION)
 # -------------------------------
 @st.cache_resource
 def load_files():
 
-    # Download df.pkl
-    if not os.path.exists("df.pkl"):
-        with st.spinner("Downloading data..."):
-            gdown.download(
-                "https://drive.google.com/uc?id=1OdaPoKoLSv91qUppKca458C0pIEXB3RV",
-                "df.pkl",
-                quiet=False
-            )
+    df_path = "df.pkl"
+    pipeline_path = "pipeline.pkl"
 
-    # Download pipeline.pkl
-    if not os.path.exists("pipeline.pkl"):
-        with st.spinner("Downloading model..."):
-            gdown.download(
-                "https://drive.google.com/uc?id=14PLYhfRgT8jJG4wlVgDeRaIT6S1Oqlm8",
-                "pipeline.pkl",
-                quiet=False
-            )
+    # -------------------------------
+    # DOWNLOAD df.pkl
+    # -------------------------------
+    if not os.path.exists(df_path):
+        st.info("Downloading df.pkl...")
+        gdown.download(
+            "https://drive.google.com/uc?export=download&id=1OdaPoKoLSv91qUppKca458C0pIEXB3RV",
+            df_path,
+            quiet=False
+        )
 
-    # Load files
-    with open("df.pkl", "rb") as f:
-        df = pickle.load(f)
+    # -------------------------------
+    # DOWNLOAD pipeline.pkl
+    # -------------------------------
+    if not os.path.exists(pipeline_path):
+        st.info("Downloading pipeline.pkl...")
+        gdown.download(
+            "https://drive.google.com/uc?export=download&id=14PLYhfRgT8jJG4wlVgDeRaIT6S1Oqlm8",
+            pipeline_path,
+            quiet=False
+        )
 
-    with open("pipeline.pkl", "rb") as f:
-        pipeline = pickle.load(f)
+    # -------------------------------
+    # DEBUG CHECKS
+    # -------------------------------
+    st.write("✅ df.pkl exists:", os.path.exists(df_path))
+    st.write("✅ pipeline.pkl exists:", os.path.exists(pipeline_path))
+
+    if os.path.exists(df_path):
+        st.write("📦 df.pkl size:", os.path.getsize(df_path))
+    if os.path.exists(pipeline_path):
+        st.write("📦 pipeline.pkl size:", os.path.getsize(pipeline_path))
+
+    # -------------------------------
+    # LOAD FILES SAFELY
+    # -------------------------------
+    try:
+        with open(df_path, "rb") as f:
+            df = pickle.load(f)
+    except Exception as e:
+        st.error(f"❌ Error loading df.pkl: {e}")
+        st.stop()
+
+    try:
+        with open(pipeline_path, "rb") as f:
+            pipeline = pickle.load(f)
+    except Exception as e:
+        st.error(f"❌ Error loading pipeline.pkl: {e}")
+        st.stop()
 
     return df, pipeline
 
 
-# Load once
+# Load data
 df, pipeline = load_files()
 
 # -------------------------------
-# ✅ UI START
+# ✅ UI
 # -------------------------------
 st.title("🏠 Real Estate Price Predictor")
 
@@ -136,4 +164,4 @@ if st.button("Predict Price"):
         st.success(f"💰 Estimated Price: {round(low,2)} Cr - {round(high,2)} Cr")
 
     except Exception as e:
-        st.error(f"Error: {e}")
+        st.error(f"❌ Prediction Error: {e}")
