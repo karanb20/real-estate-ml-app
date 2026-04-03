@@ -15,17 +15,16 @@ st.set_page_config(page_title="Real Estate Price Predictor", layout="wide")
 # -------------------------------
 @st.cache_resource
 def load_assets():
-    # IDs from your specific Google Drive links
-    df_id = "1OdaPoKoLSv91qUppKca458C0pIEXB3RV"
-    pipeline_id = "14PLYhfRgT8jJG4wlVgDeRaIT6S1Oqlm8"
+    # ✅ Updated IDs from new Google Drive links
+    df_id = "1-NQc0BoJDK2l78p9WLv24yl5uA2c0UVI"
+    pipeline_id = "1DYbodUgkZXiRqGu6cBpWeuz4zBn6pjfJ"
     
     df_path = "df.pkl"
     pipeline_path = "pipeline.pkl"
 
     def secure_download(file_id, output_path):
         if not os.path.exists(output_path):
-            with st.spinner(f"Downloading {output_path} (139MB - please wait)..."):
-                # The '&confirm=t' bypasses the Google "Too large to scan" warning
+            with st.spinner(f"Downloading {output_path} (please wait)..."):
                 url = f'https://drive.google.com/uc?id={file_id}&confirm=t'
                 gdown.download(url, output_path, quiet=False)
         
@@ -83,7 +82,6 @@ with col2:
 # -------------------------------
 if st.button("Predict Price", use_container_width=True, type="primary"):
     try:
-        # Match the columns exactly to your training set
         columns = [
             'property_type', 'sector', 'bedRoom', 'bathroom', 'balcony',
             'agePossession', 'built_up_area', 'servant room', 'store room',
@@ -97,7 +95,6 @@ if st.button("Predict Price", use_container_width=True, type="primary"):
 
         input_df = pd.DataFrame(input_data, columns=columns)
 
-        # Assuming log-transform was used: np.expm1 converts it back to Cr
         prediction = pipeline.predict(input_df)[0]
         price = np.expm1(prediction)
 
