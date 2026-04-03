@@ -1,5 +1,5 @@
 streamlit
-pandas
-numpy
-scikit-learn
 gdown
+numpy==2.0.2
+pandas==2.2.2
+scikit-learn==1.6.1
