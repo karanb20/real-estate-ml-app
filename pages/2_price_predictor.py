@@ -10,11 +10,11 @@ st.set_page_config(page_title='viz_demo')
 # Download files from Google Drive if not present
 if not os.path.exists('df.pkl'):
     with st.spinner('Loading data...'):
-        gdown.download('https://drive.google.com/uc?id=1OdaPoKoLSv91qUppKca458C0pIEXB3RV', 'df.pkl', quiet=False)
+        gdown.download('https://drive.google.com/file/d/1OdaPoKoLSv91qUppKca458C0pIEXB3RV/view?usp=drive_link', 'df.pkl', quiet=False)
 
 if not os.path.exists('pipeline.pkl'):
     with st.spinner('Loading model...'):
-        gdown.download('https://drive.google.com/uc?id=14PLYhfRgT8jJG4wlVgDeRaIT6S1Oqlm8', 'pipeline.pkl', quiet=False)
+        gdown.download('https://drive.google.com/file/d/14PLYhfRgT8jJG4wlVgDeRaIT6S1Oqlm8/view?usp=drive_link', 'pipeline.pkl', quiet=False)
 
 with open('df.pkl', 'rb') as file:
     df = pickle.load(file)
