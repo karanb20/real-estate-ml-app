@@ -106,3 +106,4 @@ This app can be deployed using:
 ---
 
 ## ⭐ If you like this project, give it a star!
+LINK - https://real-estate-ml-app-wzupkl7cksodrtk3wwojmg.streamlit.app/
